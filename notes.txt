@@ -1,0 +1,126 @@
+Sequelize: Promise-based ORM Tool
+=================================
+
+ORM (Object Relational Mapping) is a technique to
+access a relational database using object-oriented programming.
+
+Advantages of Sequelize:
+------------------------
+1. Models
+2. Validation and Data Types
+3. Inbuilt Queries
+4. Migrations
+5. Hooks and Events
+6. Transaction Support
+
+Models in Sequelize
+-------------------
+Models are the essence of Sequelize.  
+A model is an abstraction that represents a table in your database.  
+In Sequelize, it is a class that extends `Model`.
+
+Model Definition
+----------------
+Models can be defined in two equivalent ways in Sequelize:
+
+1. **Using `sequelize.define(modelName, attributes, options)`**
+2. **Extending `Model` and calling `init(attributes, options)`**
+
+IMP pts:
+
+1. // `sequelize.define` also returns the model
+    console.log(User === sequelize.models.User); // true
+
+2.  freezeTableName ---> 
+    You can stop the auto-pluralization performed by Sequelize using
+    the freezeTableName: true option. This way, Sequelize will infer
+    the table name to be equal to the model name, without any modifications:
+    
+    freezeTableName: true,
+    The example above will create a model named User pointing to a table also named User.
+
+    You can simply tell Sequelize the name of the table directly as well:
+    tableName: 'Employees',
+
+
+Model Synchronization
+----------------
+
+1. User.sync() - This creates the table if it doesn't exist 
+   (and does nothing if it already exists)
+
+2. User.sync({ force: true }) - This creates the table,
+   dropping it first if it already existed
+   
+3. User.sync({ alter: true }) - This checks what is the current state of 
+   the table in the database (which columns it has, what are their data types, etc),
+   and then performs the necessary changes in the table to make it match the model.
+
+IMP pts:
+
+1. You can use sequelize.sync() to automatically synchronize all models. Example:
+    await sequelize.sync({ force: true });
+    console.log('All models were synchronized successfully.');
+
+2. To drop all tables:
+    await sequelize.drop();
+    console.log('All tables dropped!');
+
+3. As shown above, the sync and drop operations are destructive.
+    Sequelize accepts a match option as an additional safety check, which receives a RegExp:
+
+// This will run .sync() only if database name ends with '_test'
+sequelize.sync({ force: true, match: /_test$/ });
+
+4. By default, Sequelize automatically adds the fields
+   createdAt and updatedAt to every model,
+   using the data type DataTypes.DATE.
+
+   This behavior can be disabled for a model with the timestamps: false option:
+
+
+RELATIONSHIPS
+
+------------
+
+1. ONE TO ONE
+
+a one-to-one relationship is a type of cardinality that refers to the relationship
+between two entities A and B in which one element of A may only be
+linked to maximum one element of B , and vice versa. 
+eg. person has adhaar card
+
+
+2. ONE TO MANY
+
+a one-to-many relationship is a type of cardinality that refers to the relationship
+between two entities such that single instance of an entity is associated with more than
+one instance of another entity.
+eg. take a car and an owner of the car. The car can only be owned by one owner at a time
+    or not owned at all, and an owner could own zero, one, or multiple cars.
+    One owner could have many cars, one-to-many.
+
+3. MANY TO MANY
+
+a many-to-many relationship is a type of cardinality that refers to the relationship between
+two entities, say, A and B, where A may contain a parent instance for which there are many
+children in B and vice versa.
+eg. For example, think of A as customers, and B as products. Aa customer can buy several 
+products and a product can be bought by several customers.
+
+
+
+
+ASSOCIATIONS
+
+------------
+
+Sequelize provides four types of associations that should be combined to create them:
+
+1. The HasOne association
+2. The BelongsTo association
+3. The HasMany association
+4. The BelongsToMany association
+
+
+
