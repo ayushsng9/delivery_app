@@ -1,35 +1,41 @@
-import { DataType,Model } from 'sequelize';
-import { sequelize } from '../config/config';
+import { DataTypes, Model } from 'sequelize';
+import { sequelize } from '../config/config.js';
 
 class UserMaster extends Model {}
 
 UserMaster.init(
   {
-    // Model attributes are defined here
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 'user'
-    },
     userId: {
-        type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     mobileNo: {
-        type: DataTypes.INTEGER,
+      type: DataTypes.STRING, // Phone numbers should always be string
+      allowNull: false,
+      unique: true,
     },
-    emailId:{
-        type: DataTypes.STRING
+    otp: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
-    password:{
-        type: DataTypes.STRING
-    }
+    otp_expiry: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    userType: {
+      type: DataTypes.ENUM('user', 'agent'),
+      llowNull: false,
+      defaultValue: 'user', // default role for OTP login
+    },
   },
   {
     sequelize,
-    modelName: 'UserMaster',
-    underscored: true,
-    paranoid: true,
+    modelName: 'user_master',
+        tableName: 'user_master',
+        underscored: true,
+        paranoid: true,
   },
 );
 
-export default UserMaster
+export default UserMaster;

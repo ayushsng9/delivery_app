@@ -12,4 +12,4 @@ app.use('/cluster',clusterRoutes);
 app.use('/society',societyRoutes)
 app.use('/auth',authRoutes)
 
-export default app;
+export default app; 
